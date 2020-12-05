@@ -9,16 +9,18 @@ fn main() {
     let mut ls = ints_from_file("./day-1-input.txt");
     ls.sort();
     'i: for i in 0..ls.len() {
-        'j: for j in i..ls.len() {
-            let l1 = ls[i];
-            let l2 = ls[j];
-            let sum = ls[i] + ls[j];
-            println!("{}, {}", l1, l2);
-            if sum == TARGET {
-                println!("{} * {} = {}", l1, l2, l1 * l2);
-                break 'i;
-            } else if sum > TARGET {
-                break 'j;
+        let a = ls[i];
+        for j in i..ls.len() {
+            let b = ls[j];
+            'k: for k in j..ls.len() {
+                let c = ls[k];
+                let sum = a + b + c;
+                if sum == TARGET {
+                    println!("{} * {} * {} = {}", a, b, c, a * b * c);
+                    break 'i;
+                } else if sum > TARGET {
+                    break 'k;
+                }
             }
         }
     }
