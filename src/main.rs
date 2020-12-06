@@ -31,29 +31,47 @@ fn day1 () -> () {
 }
 
 fn day2 () -> () {
-    let valid_password_count = lines_from_file("./day-2-input.txt").iter().map(day_2_parse_line).filter(password_valid).count();
-    println!("Valid password count: {:#?}", valid_password_count);
+    let part_1_solution = lines_from_file("./day-2-input.txt").iter().map(day_2_parse_line).filter(password_valid_part_1).count();
+    println!("Part 1 - valid password count: {:#?}", part_1_solution);
+    let part_2_solution = lines_from_file("./day-2-input.txt").iter().map(day_2_parse_line).filter(password_valid_part_2).count();
+    println!("Part 2 - valid password count: {:#?}", part_2_solution);
 }
 
-fn password_valid(passwords_and_restrictions: &PasswordAndRestrictions) -> bool {
+fn password_valid_part_1(passwords_and_restrictions: &PasswordAndRestrictions) -> bool {
     let substring_count = passwords_and_restrictions.password.matches(&passwords_and_restrictions.substring).count();
-    substring_count >= passwords_and_restrictions.min_substring as usize && substring_count <= passwords_and_restrictions.max_substring as usize
+    substring_count >= passwords_and_restrictions.range_start_int && substring_count <= passwords_and_restrictions.range_end_int
+}
+
+fn password_valid_part_2(passwords_and_restrictions: &PasswordAndRestrictions) -> bool {
+    let range_start_index = passwords_and_restrictions.range_start_int - 1;
+    let range_end_index = passwords_and_restrictions.range_end_int - 1;
+    let password_len = passwords_and_restrictions.password.len();
+    if range_start_index > password_len || range_end_index > password_len { return false }
+
+    let password_chars: Vec<char> = passwords_and_restrictions.password.chars().collect();
+    let substring_char = passwords_and_restrictions.substring.chars().nth(0).unwrap();
+
+    (
+        password_chars[range_start_index] == substring_char && password_chars[range_end_index] != substring_char
+    ) || (
+        password_chars[range_start_index] != substring_char && password_chars[range_end_index] == substring_char
+    )
 }
 
 #[derive(Debug)]
 struct PasswordAndRestrictions {
     password: String,
     substring: String,
-    min_substring: i32,
-    max_substring: i32
+    range_start_int: usize,
+    range_end_int: usize
 }
 
 fn day_2_parse_line(line: &String) -> PasswordAndRestrictions {
     let words: Vec<&str> = line.split_whitespace().collect();
-    let min_max: Vec<i32> = words[0].split("-").collect::<Vec<&str>>().iter().map(|line| line.parse::<i32>().unwrap()).collect();
+    let min_max: Vec<usize> = words[0].split("-").collect::<Vec<&str>>().iter().map(|line| line.parse::<usize>().unwrap()).collect();
     let substring = &words[1][0..1];
     let password = words[2];
-    PasswordAndRestrictions { password: password.to_string(), substring: substring.to_string(), min_substring: min_max[0], max_substring: min_max[1] }
+    PasswordAndRestrictions { password: password.to_string(), substring: substring.to_string(), range_start_int: min_max[0], range_end_int: min_max[1] }
 }
 
 fn lines_from_file(filename: impl AsRef<Path>) -> Vec<String> {
