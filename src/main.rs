@@ -40,13 +40,25 @@ fn day2 () -> () {
 
 fn day3 () -> () {
     let lines = lines_from_file("./day-3-input.txt");
-    let mut x = 0;
-    let mut count = 0;
+    let mut xs = [0, 0, 0, 0, 0];
+    let mut counts = [0, 0, 0, 0, 0];
+    let mut i = 0;
     for line in lines {
-        if line.chars().nth(x % line.len()).unwrap() == '#' { count += 1 }
-        x += 3;
+        let chars: Vec<char> = line.chars().collect();
+        if chars[xs[0] % line.len()] == '#' { counts[0] += 1 }
+        if chars[xs[1] % line.len()] == '#' { counts[1] += 1 }
+        if chars[xs[2] % line.len()] == '#' { counts[2] += 1 }
+        if chars[xs[3] % line.len()] == '#' { counts[3] += 1 }
+        if chars[xs[4] % line.len()] == '#' && i % 2 == 1 { counts[4] += 1 }
+        xs[0] += 1;
+        xs[1] += 3;
+        xs[2] += 5;
+        xs[3] += 7;
+        xs[4] += 1;
+        i += 1;
     }
-    println!("Day 3, part 1: {}", count);
+    println!("Day 3, part 1: {:?}", counts);
+    println!("Day 3, part 1: {}", counts.iter().fold(1, |a, b| a * b));
 }
 
 fn password_valid_part_1(passwords_and_restrictions: &PasswordAndRestrictions) -> bool {
