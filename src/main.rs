@@ -5,7 +5,8 @@ use std::io::prelude::*;
 
 fn main() {
     // day1();
-    day2();
+    // day2();
+    day3();
 }
 
 fn day1 () -> () {
@@ -35,6 +36,17 @@ fn day2 () -> () {
     println!("Part 1 - valid password count: {:#?}", part_1_solution);
     let part_2_solution = lines_from_file("./day-2-input.txt").iter().map(day_2_parse_line).filter(password_valid_part_2).count();
     println!("Part 2 - valid password count: {:#?}", part_2_solution);
+}
+
+fn day3 () -> () {
+    let lines = lines_from_file("./day-3-input.txt");
+    let mut x = 0;
+    let mut count = 0;
+    for line in lines {
+        if line.chars().nth(x % line.len()).unwrap() == '#' { count += 1 }
+        x += 3;
+    }
+    println!("Day 3, part 1: {}", count);
 }
 
 fn password_valid_part_1(passwords_and_restrictions: &PasswordAndRestrictions) -> bool {
