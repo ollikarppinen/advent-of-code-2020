@@ -51,7 +51,17 @@ fn eyr_valid(eyr: Option<&String>) -> bool {
 }
 
 fn hgt_valid(hgt: Option<&String>) -> bool {
-    return !hgt.is_none()
+    if hgt.is_none() { return false };
+
+    if matches_regex(r"^\d{3}cm$", hgt.unwrap()) {
+        let hgt_int = hgt.unwrap().replace("cm", "").parse::<i32>().unwrap();
+        return hgt_int >= 150 && hgt_int <= 193;
+    } else if matches_regex(r"^\d{2}in$", hgt.unwrap()) {
+        let hgt_int = hgt.unwrap().replace("in", "").parse::<i32>().unwrap();
+        return hgt_int >= 59 && hgt_int <= 76;
+    }
+
+    return false;
 }
 
 fn hcl_valid(hcl: Option<&String>) -> bool {
