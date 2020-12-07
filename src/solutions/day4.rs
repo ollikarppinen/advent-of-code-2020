@@ -84,7 +84,8 @@ fn ecl_valid(ecl: Option<&String>) -> bool {
 }
 
 fn pid_valid(pid: Option<&String>) -> bool {
-    return !pid.is_none()
+    if pid.is_none() { return false }
+    return matches_regex(r"^\d{9}$", pid.unwrap());
 }
 
 fn cid_valid(_cid: Option<&String>) -> bool {
