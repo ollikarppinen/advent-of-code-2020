@@ -45,7 +45,9 @@ fn iyr_valid(iyr: Option<&String>) -> bool {
 }
 
 fn eyr_valid(eyr: Option<&String>) -> bool {
-    return !eyr.is_none()
+    if eyr.is_none() && matches_regex(r"^\d{4}$", eyr.unwrap()) { return false }
+    let eyr_int = eyr.unwrap().parse::<i32>().unwrap();
+    return eyr_int >= 2020 && eyr_int <= 2030;
 }
 
 fn hgt_valid(hgt: Option<&String>) -> bool {
