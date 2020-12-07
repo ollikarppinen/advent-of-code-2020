@@ -40,7 +40,8 @@ fn byr_valid(byr: Option<&String>) -> bool {
 
 fn iyr_valid(iyr: Option<&String>) -> bool {
     if iyr.is_none() && matches_regex(r"^\d{4}$", iyr.unwrap()) { return false }
-    return true;
+    let iyr_int = iyr.unwrap().parse::<i32>().unwrap();
+    return iyr_int >= 2010 && iyr_int <= 2020;
 }
 
 fn eyr_valid(eyr: Option<&String>) -> bool {
