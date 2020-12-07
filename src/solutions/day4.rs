@@ -33,19 +33,19 @@ fn valid_passport(passport: &&Passport) -> bool {
 }
 
 fn byr_valid(byr: Option<&String>) -> bool {
-    if byr.is_none() && matches_regex(r"^\d{4}$", byr.unwrap()) { return false }
+    if byr.is_none() || !matches_regex(r"^\d{4}$", byr.unwrap()) { return false }
     let byr_int = byr.unwrap().parse::<i32>().unwrap();
     return byr_int >= 1920 && byr_int <= 2002;
 }
 
 fn iyr_valid(iyr: Option<&String>) -> bool {
-    if iyr.is_none() && matches_regex(r"^\d{4}$", iyr.unwrap()) { return false }
+    if iyr.is_none() || !matches_regex(r"^\d{4}$", iyr.unwrap()) { return false }
     let iyr_int = iyr.unwrap().parse::<i32>().unwrap();
     return iyr_int >= 2010 && iyr_int <= 2020;
 }
 
 fn eyr_valid(eyr: Option<&String>) -> bool {
-    if eyr.is_none() && matches_regex(r"^\d{4}$", eyr.unwrap()) { return false }
+    if eyr.is_none() || !matches_regex(r"^\d{4}$", eyr.unwrap()) { return false }
     let eyr_int = eyr.unwrap().parse::<i32>().unwrap();
     return eyr_int >= 2020 && eyr_int <= 2030;
 }
@@ -65,7 +65,8 @@ fn hgt_valid(hgt: Option<&String>) -> bool {
 }
 
 fn hcl_valid(hcl: Option<&String>) -> bool {
-    return !hcl.is_none()
+    if hcl.is_none() || !matches_regex(r"^#[0-9a-z]{6}$", hcl.unwrap()) { return false }
+    return true;
 }
 
 fn ecl_valid(ecl: Option<&String>) -> bool {
