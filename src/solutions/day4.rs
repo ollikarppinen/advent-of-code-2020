@@ -4,7 +4,7 @@ use regex::Regex;
 
 pub fn run () -> () {
     println!("Regex match: {}", matches_regex(r"^\d{4}$", "2014"));
-    let passports = parse_passports("./day-4-example-input.txt");
+    let passports = parse_passports("./day-4-input.txt");
     let valid_passport_count = passports.iter().filter(&&valid_passport).count();
     println!("Day 4, part 1: valid passport count: {:?}", valid_passport_count);
 }
