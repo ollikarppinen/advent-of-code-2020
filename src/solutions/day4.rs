@@ -70,7 +70,17 @@ fn hcl_valid(hcl: Option<&String>) -> bool {
 }
 
 fn ecl_valid(ecl: Option<&String>) -> bool {
-    return !ecl.is_none()
+    if ecl.is_none() { return false }
+    match ecl.unwrap().as_str() {
+       "amb" => return true,
+       "blu" => return true,
+       "brn" => return true,
+       "gry" => return true,
+       "grn" => return true,
+       "hzl" => return true,
+       "oth" => return true,
+       _ => return false
+    }
 }
 
 fn pid_valid(pid: Option<&String>) -> bool {
