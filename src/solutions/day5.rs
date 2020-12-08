@@ -3,12 +3,29 @@ use std::path::Path;
 
 pub fn run () -> () {
     let boarding_passes = parse_boarding_passes("./day-5-input.txt");
-    let highest_seat_id = boarding_passes.iter().map(calculate_seat_id).max().unwrap();
+    let mut seat_ids: Vec<i32> = boarding_passes.iter().map(calculate_seat_id).collect();
+    let highest_seat_id = seat_ids.iter().max().unwrap();
     println!("Day 5, part 1, highest seat id: {}", highest_seat_id);
+    seat_ids.sort();
+    let missing_seat_id = find_missing_seat_id(seat_ids);
+    println!("Day 5, part 2, missing seat id: {}", missing_seat_id);
 }
 
 fn median(a: i32, b: i32) -> i32 {
     a + (b - a) / 2
+}
+
+fn find_missing_seat_id(ids: Vec<i32>) -> i32 {
+    let mut latest_id = None;
+    let mut missing_id = 0;
+    for id in ids {
+        if !latest_id.is_none() && latest_id.unwrap() + 2 == id {
+            missing_id = latest_id.unwrap() + 1;
+            break;
+        }
+        latest_id = Some(id);
+    }
+    missing_id
 }
 
 fn parse_boarding_passes(path: impl AsRef<Path>) -> Vec<BoardingPass> {
